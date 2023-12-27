@@ -14,7 +14,7 @@ android {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion compose_compiler_version
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
     compileOptions {
         coreLibraryDesugaringEnabled true
@@ -30,13 +30,13 @@ android {
 dependencies {
     implementation project(":app")
 
-    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$core_lib_desugaring"
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 
-    ksp "me.tatarka.inject:kotlin-inject-compiler-ksp:0.6.3"
-    implementation "me.tatarka.inject:kotlin-inject-runtime:0.6.3"
+    ksp(libs.kotlin.inject.compiler.ksp)
+    implementation(libs.kotlin.inject.runtime)
 
-    testImplementation 'junit:junit:4.13.2'
-    testImplementation 'app.cash.turbine:turbine:1.0.0'
-    testImplementation "io.mockk:mockk:1.13.8"
-    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3'
+    testImplementation(libs.junit)
+    testImplementation(libs.turbine)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
 }
