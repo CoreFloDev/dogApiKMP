@@ -1,34 +1,37 @@
-apply plugin: 'com.android.dynamic-feature'
-apply plugin: 'kotlin-android'
-apply plugin: 'com.google.devtools.ksp'
+plugins {
+    id(libs.plugins.androidDynamicFeature.get().pluginId)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.ksp)
+}
 
 android {
-    compileSdk 34
+    compileSdk = 34
+    namespace = "io.coreflodev.dog.list"
 
     defaultConfig {
-        minSdk 28
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        minSdk = 28
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildFeatures {
-        compose true
+        compose = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
     compileOptions {
-        coreLibraryDesugaringEnabled true
+        isCoreLibraryDesugaringEnabled = true
 
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '17'
+        jvmTarget = "17"
     }
 }
 
 dependencies {
-    implementation project(":app")
+    implementation(project(":app"))
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 

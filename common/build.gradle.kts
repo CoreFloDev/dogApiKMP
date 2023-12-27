@@ -1,32 +1,29 @@
 plugins {
-    id 'com.android.library'
-    id 'org.jetbrains.kotlin.android'
-    id 'com.google.devtools.ksp'
-    id 'org.jetbrains.kotlin.plugin.serialization' version "1.9.21"
+    id(libs.plugins.androidLibrary.get().pluginId)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.ksp)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
-    namespace 'io.coreflodev.common'
-    compileSdk 34
+    namespace = "io.coreflodev.common"
+    compileSdk = 34
 
     defaultConfig {
-        minSdk 28
-        targetSdk 34
-        versionCode 1
-        versionName "1.0"
+        minSdk = 28
     }
     compileOptions {
-        coreLibraryDesugaringEnabled true
+        isCoreLibraryDesugaringEnabled = true
 
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
     kotlinOptions {
-        jvmTarget = '17'
+        jvmTarget = "17"
         freeCompilerArgs += "-opt-in=kotlin.io.encoding.ExperimentalEncodingApi"
     }
 }

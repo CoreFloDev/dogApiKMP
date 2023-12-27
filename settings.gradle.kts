@@ -1,3 +1,5 @@
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 pluginManagement {
     repositories {
         google()
@@ -11,8 +13,9 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+
 rootProject.name = "dogApi"
-include ':common'
-include ':app'
+include(":common")
+include(":app")
 // load all features module
-file('./feature/').eachDir { sub -> include ':feature:' + sub.name }
+file("./feature/").listFiles()?.forEach { sub -> include(":feature:" + sub.name) }
