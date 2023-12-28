@@ -1,5 +1,5 @@
 plugins {
-    id(libs.plugins.androidLibrary.get().pluginId)
+    id(libs.plugins.android.library.get().pluginId)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.kotlin.serialization)
