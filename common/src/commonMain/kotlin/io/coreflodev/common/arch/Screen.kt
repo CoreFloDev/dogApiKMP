@@ -20,8 +20,8 @@ class Screen<I : ScreenInput, O : ScreenOutput, N : ScreenNavigation, A : Domain
     private val reducingNavigation: (Flow<DomainResult.Navigation>) -> Flow<N> = { flow -> flow.flatMapLatest { emptyFlow() } }
 ) {
 
-    private var viewScope: CoroutineScope = CoroutineScope(Dispatchers.IO)
-    private val scope: CoroutineScope = CoroutineScope(Dispatchers.IO)
+    private var viewScope: CoroutineScope = CoroutineScope(Dispatchers.Default)
+    private val scope: CoroutineScope = CoroutineScope(Dispatchers.Default)
 
     private val input: Channel<I> = Channel()
 
@@ -36,7 +36,7 @@ class Screen<I : ScreenInput, O : ScreenOutput, N : ScreenNavigation, A : Domain
     }
 
     fun attach(): Attach<I, O, N> {
-        viewScope = CoroutineScope(Dispatchers.IO)
+        viewScope = CoroutineScope(Dispatchers.Default)
 
         val (out, nav) = output
 

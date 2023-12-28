@@ -19,7 +19,7 @@ abstract class AppModule(
 
     @Provides
     @AppScope
-    fun provideHttpClient() = HttpClient {
+    fun provideHttpClient(): HttpClient = HttpClient {
         install("ApiAuthentication") {
             requestPipeline.intercept(HttpRequestPipeline.State) {
                 context.header("x-api-key", "0d7f4abb-30bb-4dab-9d7d-1ee9dcbe6cbe")
@@ -28,7 +28,6 @@ abstract class AppModule(
         // Json
         install(ContentNegotiation) {
             json(json)
-            charset("utf-8")
         }
 
     }
