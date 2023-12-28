@@ -1,4 +1,5 @@
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+@Suppress("DSL_SCOPE_VIOLATION")
 
 pluginManagement {
     repositories {

@@ -1,8 +1,41 @@
 plugins {
-    id(libs.plugins.android.library.get().pluginId)
-    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.kotlin.serialization)
+}
+
+kotlin {
+    androidTarget {
+        compilations.all {
+            kotlinOptions {
+                jvmTarget = "17"
+                freeCompilerArgs += "-opt-in=kotlin.io.encoding.ExperimentalEncodingApi"
+            }
+        }
+    }
+
+    sourceSets {
+        commonMain.dependencies {
+            implementation(libs.ktor.client.core)
+            api(libs.kotlinx.coroutines.core)
+
+            implementation(libs.kotlin.inject.runtime)
+
+            implementation(libs.ktor.client.json)
+            implementation(libs.ktor.serialization.kotlinx.json)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.kotlinx.serialization.json)
+        }
+        androidMain.dependencies {
+            implementation(libs.ktor.client.okhttp)
+            implementation(libs.okhttp)
+            api(libs.kotlinx.coroutines.android)
+        }
+        iosMain.dependencies {
+            implementation(libs.ktor.client.darwin)
+        }
+    }
 }
 
 android {
@@ -18,36 +51,12 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-        freeCompilerArgs += "-opt-in=kotlin.io.encoding.ExperimentalEncodingApi"
-    }
 }
 
 dependencies {
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 
-    api(libs.kotlinx.coroutines.core)
-    api(libs.kotlinx.coroutines.android)
-
-    // Http
-    implementation(libs.ktor.client.json)
-    implementation(libs.ktor.client.serialization.jvm)
-    implementation(libs.ktor.serialization.kotlinx.json)
-    implementation(libs.ktor.client.content.negotiation)
-    implementation(libs.ktor.client.android)
-
-    implementation(platform(libs.okhttp.bom))
-    implementation("com.squareup.okhttp3:okhttp")
-
     ksp(libs.kotlin.inject.compiler.ksp)
-    implementation(libs.kotlin.inject.runtime)
-
-    implementation(libs.kotlinx.serialization.json)
 
     testImplementation(libs.junit)
     testImplementation(libs.turbine)

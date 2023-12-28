@@ -1,5 +1,5 @@
 plugins {
-    id(libs.plugins.android.dynamicFeature.get().pluginId)
+    alias(libs.plugins.android.dynamicFeature)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.ksp)
 }
