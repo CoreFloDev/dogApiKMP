@@ -1,17 +1,17 @@
 package io.coreflodev.dog.details.domain
 
 import app.cash.turbine.test
-import io.coreflodev.dog.common.repo.dog.DogRepository
-import io.coreflodev.dog.common.repo.dog.network.Breed
-import io.coreflodev.dog.common.repo.dog.network.Dog
+import io.coreflodev.common.repo.DogRepository
+import io.coreflodev.common.repo.network.Breed
+import io.coreflodev.common.repo.network.Dog
 import io.mockk.every
 import io.mockk.mockk
+import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class DisplayDogDetailsUseCaseTest {

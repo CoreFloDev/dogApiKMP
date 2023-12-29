@@ -15,6 +15,8 @@ kotlin {
         }
     }
 
+    jvm()
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -67,7 +69,8 @@ android {
 dependencies {
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 
-    ksp(libs.kotlin.inject.compiler.ksp)
+    add("kspAndroid", libs.kotlin.inject.compiler.ksp)
+    add("kspIosX64", libs.kotlin.inject.compiler.ksp)
 
     testImplementation(libs.junit)
     testImplementation(libs.turbine)

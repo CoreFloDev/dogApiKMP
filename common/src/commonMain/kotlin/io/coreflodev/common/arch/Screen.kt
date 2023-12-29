@@ -20,6 +20,7 @@ class Screen<I : ScreenInput, O : ScreenOutput, N : ScreenNavigation, A : Domain
     private val reducingNavigation: (Flow<DomainResult.Navigation>) -> Flow<N> = { flow -> flow.flatMapLatest { emptyFlow() } }
 ) {
 
+    // TODO migrate to io dispatcher once common have it
     private var viewScope: CoroutineScope = CoroutineScope(Dispatchers.Default)
     private val scope: CoroutineScope = CoroutineScope(Dispatchers.Default)
 

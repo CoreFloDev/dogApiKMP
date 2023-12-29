@@ -1,7 +1,47 @@
 plugins {
     alias(libs.plugins.android.dynamicFeature)
-    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.kotlin.ksp)
+}
+
+kotlin {
+    androidTarget {
+        compilations.all {
+            kotlinOptions {
+                jvmTarget = "17"
+                freeCompilerArgs += "-opt-in=kotlin.io.encoding.ExperimentalEncodingApi"
+            }
+        }
+    }
+
+    jvm()
+
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "featureDetails"
+            isStatic = true
+        }
+    }
+
+    sourceSets {
+        commonMain.dependencies {
+            implementation(project(":common"))
+            implementation(libs.kotlin.inject.runtime)
+        }
+        androidMain.dependencies {
+            implementation(project(":app"))
+        }
+        jvmTest.dependencies {
+            implementation(libs.junit)
+            implementation(libs.turbine)
+            implementation(libs.mockk)
+            implementation(libs.kotlinx.coroutines.test)
+        }
+    }
 }
 
 android {
@@ -25,21 +65,11 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
 }
 
 dependencies {
-    implementation(project(":app"))
-
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 
-    ksp(libs.kotlin.inject.compiler.ksp)
-    implementation(libs.kotlin.inject.runtime)
-
-    testImplementation(libs.junit)
-    testImplementation(libs.turbine)
-    testImplementation(libs.mockk)
-    testImplementation(libs.kotlinx.coroutines.test)
+    add("kspAndroid", libs.kotlin.inject.compiler.ksp)
+    add("kspIosX64", libs.kotlin.inject.compiler.ksp)
 }
