@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="list-jvm">
+    <output-path>$PROJECT_DIR$/feature/list/build/libs</output-path>
+    <root id="archive" name="list-jvm.jar">
+      <element id="module-output" name="dogApi.feature.list.jvmMain" />
+    </root>
+  </artifact>
+</component>
