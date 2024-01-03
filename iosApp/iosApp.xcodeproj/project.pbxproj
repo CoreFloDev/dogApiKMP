@@ -317,7 +317,7 @@
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-framework",
-					Common,
+					"Common,FeatureList,FeatureDetails",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "${BUNDLE_ID}${TEAM_ID}";
 				PRODUCT_NAME = "${APP_NAME}";
@@ -350,7 +350,7 @@
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-framework",
-					Common,
+					"Common,FeatureList,FeatureDetails",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "${BUNDLE_ID}${TEAM_ID}";
 				PRODUCT_NAME = "${APP_NAME}";

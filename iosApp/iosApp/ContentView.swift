@@ -1,5 +1,7 @@
 import SwiftUI
 import Common
+import FeatureList
+import FeatureDetails
 
 struct ContentView: View {
     @State private var showContent = false

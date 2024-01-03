@@ -32,8 +32,8 @@ android {
     buildTypes {
         release {
             signingConfig = signingConfigs["release"]
-            isMinifyEnabled = true
-            isShrinkResources = true
+            minifyEnabled = true
+            shrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             packaging {
                 resources.excludes.add("DebugProbesKt.bin")
@@ -41,7 +41,7 @@ android {
         }
     }
     compileOptions {
-        isCoreLibraryDesugaringEnabled = true
+        coreLibraryDesugaringEnabled = true
 
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -62,7 +62,9 @@ android {
         }
     }
     namespace = "io.coreflodev.dog"
-    file("../feature/").listFiles()?.forEach { sub -> dynamicFeatures += ":feature:" + sub.name }
+    file('../feature/').eachDir { sub ->
+        dynamicFeatures << ':feature:' + sub.name
+    }
 }
 
 dependencies {
