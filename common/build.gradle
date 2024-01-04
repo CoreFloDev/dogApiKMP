@@ -3,6 +3,13 @@ plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.skie)
+}
+
+skie {
+    analytics {
+        enabled.set(false)
+    }
 }
 
 kotlin {
@@ -16,10 +23,6 @@ kotlin {
     }
 
     jvm()
-
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
 
     [
         iosX64(),
@@ -75,6 +78,8 @@ dependencies {
 
     add("kspAndroid", libs.kotlin.inject.compiler.ksp)
     add("kspIosX64", libs.kotlin.inject.compiler.ksp)
+    add("kspIosArm64", libs.kotlin.inject.compiler.ksp)
+    add("kspIosSimulatorArm64", libs.kotlin.inject.compiler.ksp)
 
     testImplementation(libs.junit)
     testImplementation(libs.turbine)

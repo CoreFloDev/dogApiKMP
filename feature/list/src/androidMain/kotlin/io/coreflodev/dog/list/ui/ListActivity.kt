@@ -31,7 +31,6 @@ import io.coreflodev.dog.ui.BaseUi
 import io.coreflodev.dog.ui.LoadImage
 import io.coreflodev.dog.list.arch.ListInput
 import io.coreflodev.dog.list.arch.ListOutput
-import io.coreflodev.dog.list.arch.ScreenState
 import io.coreflodev.dog.list.di.ListStateHolder
 
 class ListActivity : ComponentActivity() {
@@ -59,10 +58,10 @@ class ListActivity : ComponentActivity() {
 
 @Composable
 fun Content(output: ListOutput, input: (ListInput) -> Unit, paddingValues: PaddingValues) {
-    when (output.state) {
-        is ScreenState.Display -> {
+    when (output) {
+        is ListOutput.Display -> {
             LazyColumn(contentPadding = paddingValues) {
-                items(output.state.list) { item ->
+                items(output.list) { item ->
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -74,7 +73,7 @@ fun Content(output: ListOutput, input: (ListInput) -> Unit, paddingValues: Paddi
                     ) {
                         LoadImage(
                             url = item.image,
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxSize()
                         )
                         if (item.name.isNotEmpty()) {
                             Text(
@@ -91,7 +90,7 @@ fun Content(output: ListOutput, input: (ListInput) -> Unit, paddingValues: Paddi
                 }
             }
         }
-        ScreenState.Loading -> {
+        ListOutput.Loading -> {
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier.fillMaxSize()
@@ -99,7 +98,7 @@ fun Content(output: ListOutput, input: (ListInput) -> Unit, paddingValues: Paddi
                 CircularProgressIndicator()
             }
         }
-        ScreenState.Retry -> {
+        ListOutput.Retry -> {
             Button(onClick = {
                 input(ListInput.RetryClicked)
             }) {
