@@ -1,0 +1,27 @@
+plugins {
+    alias(libs.plugins.kotlin.multiplatform)
+}
+
+kotlin {
+    [
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ].forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "Shared"
+            isStatic = true
+            export(project(":common"))
+            export(project(":feature:details"))
+            export(project(":feature:list"))
+        }
+    }
+
+    sourceSets {
+        commonMain.dependencies {
+            api(project(":common"))
+            api(project(":feature:details"))
+            api(project(":feature:list"))
+        }
+    }
+}

@@ -19,3 +19,4 @@ include(":app")
 file("./feature/").eachDir { sub ->
     include(":feature:" + sub.name)
 }
+include ':shared'

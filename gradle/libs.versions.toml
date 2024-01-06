@@ -1,5 +1,5 @@
 [versions]
-agp = "8.4.0-alpha02"
+agp = "8.4.0-alpha03"
 activityCompose = "1.8.2"
 coil = "2.5.0"
 desugar_jdk_libs = "2.0.4"
@@ -22,6 +22,9 @@ ui = "1.6.0-beta03"
 compose-compiler = "1.5.7"
 compose-plugin = "1.5.11"
 skie = "0.6.1"
+coreKtx = "1.12.0"
+appcompat = "1.6.1"
+material = "1.10.0"
 
 [libraries]
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
@@ -52,6 +55,9 @@ turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 ui = { module = "androidx.compose.ui:ui", version.ref = "ui" }
 ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "ui" }
 ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "ui" }
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

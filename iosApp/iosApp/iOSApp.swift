@@ -1,9 +1,9 @@
 import SwiftUI
-import Common
+import Shared
 
 class IosNavigation: Navigation {
     func startDetailsActivity(id: String) {
-        print("coucou opening details screens")
+        print("coucou opening detail screen")
     }
 }
 
@@ -18,6 +18,5 @@ struct iOSApp: App {
 }
 
 class IOSAppComponent {
-    static let shared = IOSAppComponent()
     static let app: AppComponent = InjectAppComponent(nav: { IosNavigation()})
 }
