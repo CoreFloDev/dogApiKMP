@@ -1,11 +1,3 @@
-//
-//  DetailsView.swift
-//  iosApp
-//
-//  Created by florent guillemot on 04/01/2024.
-//  Copyright © 2024 orgName. All rights reserved.
-//
-
 import SwiftUI
 
 struct DetailsView: View {

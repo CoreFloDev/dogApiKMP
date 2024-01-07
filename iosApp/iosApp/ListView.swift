@@ -8,17 +8,43 @@ struct ListView: View {
     var body: some View {
         NavigationView {
             VStack {
+                // guard let content = vm.content else return Spacer()
+                
                 switch onEnum(of: vm.content) {
                 case .loading:
-                    Text("loading")
+                    ProgressView()
                 case .retry:
-                    Text("Retry")
+                    Button(action: { vm.input(inp: ListInput.RetryClicked()) }) {
+                        Text("retry")
+                    }
                 case .display(let res):
                     List {
                         ForEach(res.list, id: \.id) { item in
                             VStack {
+                                AsyncImage(
+                                    url: URL(string: item.image)) { phase in
+                                        switch phase {
+                                        case .empty:
+                                            ProgressView()
+                                        case .success(let image):
+                                            image.resizable()
+                                                 .aspectRatio(contentMode: .fit)
+                                                 .frame(maxWidth: 300, maxHeight: 100)
+                                        case .failure:
+                                            Image(systemName: "photo")
+                                        @unknown default:
+                                            // Since the AsyncImagePhase enum isn't frozen,
+                                            // we need to add this currently unused fallback
+                                            // to handle any new cases that might be added
+                                            // in the future:
+                                            EmptyView()
+                                        }
+                                    }
+                                    .frame(maxWidth: 300, maxHeight: 100)
                                 Text(item.name)
-                                AsyncImage(url: URL(string: item.image))
+                            }
+                            .onTapGesture {
+                                vm.input(inp: ListInput.PictureClicked(id: item.id))
                             }
                         }
                     }
@@ -28,10 +54,8 @@ struct ListView: View {
             }
             .navigationTitle("Dog list")
         }
-        .onAppear{
-            Task {
-                await vm.onAppear()
-            }
+        .onAppear {
+            vm.onAppear()
         }
         .onDisappear(perform: {
             vm.onDisappear()
@@ -47,16 +71,33 @@ class ListViewModel: ObservableObject {
     private let screen = InjectListComponent(appComponent: IOSAppComponent.app).screen
 
     @Published var content: ListOutput? = nil
+    
+    private var input: ((ListInput) -> Void)? = nil
 
-    func onAppear() async {
+    func onAppear() {
         let attach = screen.attach()
         let nav = attach.navigation
         let output = attach.output
-        let input = attach.input
+        input = attach.input
 
-        for await aout in output {
-            content = aout
+        Task {
+            for await aout in output {
+                DispatchQueue.main.async {
+                    self.content = aout
+                }
+            }
         }
+        
+        Task {
+            for await move in nav {
+                // subscribed
+            }
+        }
+    }
+    
+    func input(inp: ListInput) {
+        guard let constant = input else { return }
+        constant(inp)
     }
 
     func onDisappear() {
