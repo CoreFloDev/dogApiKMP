@@ -2,13 +2,6 @@ plugins {
     alias(libs.plugins.android.dynamicFeature)
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.kotlin.ksp)
-    alias(libs.plugins.skie)
-}
-
-skie {
-    analytics {
-        enabled.set(false)
-    }
 }
 
 kotlin {
@@ -22,17 +15,9 @@ kotlin {
     }
 
     jvm()
-
-    [
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ].forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "FeatureList"
-            isStatic = true
-        }
-    }
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
 
     sourceSets {
         commonMain.dependencies {
