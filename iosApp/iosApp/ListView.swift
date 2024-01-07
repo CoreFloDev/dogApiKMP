@@ -10,7 +10,7 @@ struct ListView: View {
             VStack {
                 switch onEnum(of: vm.content) {
                 case .loading:
-                    Text("loadiing")
+                    Text("loading")
                 case .retry:
                     Text("Retry")
                 case .display(let res):
@@ -23,7 +23,7 @@ struct ListView: View {
                         }
                     }
                 case nil:
-                    Text("nulle")
+                    Text("null")
                 }
             }
             .navigationTitle("Dog list")
