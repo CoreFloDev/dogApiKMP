@@ -1,11 +1,111 @@
 import SwiftUI
+import Shared
 
 struct DetailsView: View {
+    
+    @ObservedObject private var vm : DetailsViewModel
+    
+    init(id: String) {
+        print("coucou details view id", id)
+        self.vm = DetailsViewModel(imageId: id)
+    }
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        
+        VStack {
+            switch onEnum(of: vm.content?.uiState) {
+            case.loading:
+                ProgressView()
+            case .retry:
+                Button(action: { vm.input(inp: DetailsInput.RetryClicked()) }) {
+                    Text("retry")
+                }
+            case .display(let res):
+                Text(res.name)
+                AsyncImage(
+                    url: URL(string: res.image)) { phase in
+                        switch phase {
+                        case .empty:
+                            ProgressView()
+                        case .success(let image):
+                            image.resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(maxWidth: 300, maxHeight: 100)
+                        case .failure:
+                            Image(systemName: "photo")
+                        @unknown default:
+                            // Since the AsyncImagePhase enum isn't frozen,
+                            // we need to add this currently unused fallback
+                            // to handle any new cases that might be added
+                            // in the future:
+                            EmptyView()
+                        }
+                    }
+                    .frame(maxWidth: 300, maxHeight: 100)
+                Text(res.origin)
+                Text(res.temperament)
+                Text(res.wikiUrl)
+            case nil:
+                Text("nil")
+            }
+        }
+        .onAppear {
+            vm.onAppear()
+        }
+        .onDisappear {
+            vm.onDisappear()
+        }
     }
 }
 
 #Preview {
-    DetailsView()
+    DetailsView(id: "42")
+}
+
+class DetailsViewModel: ObservableObject {
+    private let imageId: String
+
+    init(imageId: String) {
+        self.imageId = imageId
+    }
+    
+    private lazy var screen = InjectDetailsComponent(appComponent: IOSAppComponent.app, imageId: imageId).screen
+
+    @Published var content: DetailsOutput? = nil
+    
+    private var input: ((DetailsInput) -> Void)? = nil
+
+    func onAppear() {
+        let attach = screen.attach()
+        let nav = attach.navigation
+        let output = attach.output
+        input = attach.input
+
+        Task {
+            for await aout in output {
+                DispatchQueue.main.async {
+                    self.content = aout
+                }
+            }
+        }
+        
+        Task {
+            for await move in nav {
+                // subscribed
+            }
+        }
+    }
+    
+    func input(inp: DetailsInput) {
+        guard let constant = input else { return }
+        constant(inp)
+    }
+
+    func onDisappear() {
+        screen.detach()
+    }
+
+    deinit {
+        screen.terminate()
+    }
 }
