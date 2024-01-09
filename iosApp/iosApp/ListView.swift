@@ -8,57 +8,44 @@ struct ListView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                // guard let content = vm.content else return Spacer()
-                
-                switch onEnum(of: vm.content) {
-                case .loading:
-                    ProgressView()
-                case .retry:
-                    Button(action: { vm.input(inp: ListInput.RetryClicked()) }) {
-                        Text("retry")
-                    }
-                case .display(let res):
-                    List {
-                        ForEach(res.list, id: \.id) { item in
-                            NavigationLink(destination: DetailsView.init(id: item.id)) {
-                                VStack {
-                                    AsyncImage(
-                                        url: URL(string: item.image)) { phase in
-                                            switch phase {
-                                            case .empty:
-                                                ProgressView()
-                                            case .success(let image):
-                                                image.resizable()
-                                                    .aspectRatio(contentMode: .fit)
-                                                    .frame(maxWidth: 300, maxHeight: 100)
-                                            case .failure:
-                                                Image(systemName: "photo")
-                                            @unknown default:
-                                                // Since the AsyncImagePhase enum isn't frozen,
-                                                // we need to add this currently unused fallback
-                                                // to handle any new cases that might be added
-                                                // in the future:
-                                                EmptyView()
+                IfLet (vm.content) { content in
+                    switch onEnum(of: content) {
+                    case .loading:
+                        ProgressView()
+                    case .retry:
+                        Button(action: { vm.input(inp: ListInput.RetryClicked()) }) {
+                            Text("retry")
+                        }
+                    case .display(let res):
+                        List {
+                            ForEach(res.list, id: \.id) { item in
+                                NavigationLink(destination: DetailsView.init(id: item.id)) {
+                                    VStack {
+                                        AsyncImage(
+                                            url: URL(string: item.image)) { phase in
+                                                switch phase {
+                                                case .empty:
+                                                    ProgressView()
+                                                case .success(let image):
+                                                    image.resizable()
+                                                        .aspectRatio(contentMode: .fit)
+                                                        .frame(maxWidth: 300, maxHeight: 100)
+                                                case .failure:
+                                                    Image(systemName: "photo")
+                                                @unknown default:
+                                                    EmptyView()
+                                                }
                                             }
-                                        }
-                                        .frame(maxWidth: 300, maxHeight: 100)
-                                    Text(item.name)
+                                            .frame(maxWidth: 300, maxHeight: 100)
+                                        Text(item.name)
+                                    }
                                 }
                             }
-//                            .onTapGesture {
-//                                vm.input(inp: ListInput.PictureClicked(id: item.id))
-//                                // DetailsView(id: item.id)
-//                            }
                         }
                     }
-                case nil:
-                    Text("null")
                 }
             }
             .navigationTitle("Dog list")
-//            .navigationDestination(for: <#T##Hashable.Protocol#>, destination: {
-//                
-//            })
         }
         .onAppear {
             vm.onAppear()

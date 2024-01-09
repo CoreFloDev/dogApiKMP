@@ -11,42 +11,38 @@ struct DetailsView: View {
     }
     
     var body: some View {
-        
         VStack {
-            switch onEnum(of: vm.content?.uiState) {
-            case.loading:
-                ProgressView()
-            case .retry:
-                Button(action: { vm.input(inp: DetailsInput.RetryClicked()) }) {
-                    Text("retry")
-                }
-            case .display(let res):
-                Text(res.name)
-                AsyncImage(
-                    url: URL(string: res.image)) { phase in
-                        switch phase {
-                        case .empty:
-                            ProgressView()
-                        case .success(let image):
-                            image.resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(maxWidth: 300, maxHeight: 100)
-                        case .failure:
-                            Image(systemName: "photo")
-                        @unknown default:
-                            // Since the AsyncImagePhase enum isn't frozen,
-                            // we need to add this currently unused fallback
-                            // to handle any new cases that might be added
-                            // in the future:
-                            EmptyView()
-                        }
+            IfLet (vm.content) { content in
+                switch onEnum(of: content.uiState) {
+                case.loading:
+                    ProgressView()
+                case .retry:
+                    Button(action: { vm.input(inp: DetailsInput.RetryClicked()) }) {
+                        Text("retry")
                     }
-                    .frame(maxWidth: 300, maxHeight: 100)
-                Text(res.origin)
-                Text(res.temperament)
-                Text(res.wikiUrl)
-            case nil:
-                Text("nil")
+                case .display(let res):
+                    Text(res.name)
+                    AsyncImage(
+                        url: URL(string: res.image)) { phase in
+                            switch phase {
+                            case .empty:
+                                ProgressView()
+                            case .success(let image):
+                                image.resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(maxWidth: 300, maxHeight: 100)
+                            case .failure:
+                                Image(systemName: "photo")
+                            @unknown default:
+                                EmptyView()
+                            }
+                        }
+                        .frame(maxWidth: 300, maxHeight: 100)
+                    Text(res.origin)
+                    Text(res.temperament)
+                    Text(res.wikiUrl)
+                    Spacer()
+                }
             }
         }
         .onAppear {
@@ -59,7 +55,7 @@ struct DetailsView: View {
 }
 
 #Preview {
-    DetailsView(id: "42")
+    DetailsView(id: "SkmRJl9VQ")
 }
 
 class DetailsViewModel: ObservableObject {
