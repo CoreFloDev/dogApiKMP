@@ -47,12 +47,8 @@ struct ListView: View {
             }
             .navigationTitle("Dog list")
         }
-        .onAppear {
-            vm.onAppear()
-        }
-        .onDisappear(perform: {
-            vm.onDisappear()
-        })
+        .onAppear { vm.onAppear() }
+        .onDisappear { vm.onDisappear() }
     }
 }
 

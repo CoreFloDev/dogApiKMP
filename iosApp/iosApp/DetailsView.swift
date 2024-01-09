@@ -6,7 +6,6 @@ struct DetailsView: View {
     @ObservedObject private var vm : DetailsViewModel
     
     init(id: String) {
-        print("coucou details view id", id)
         self.vm = DetailsViewModel(imageId: id)
     }
     
@@ -45,12 +44,8 @@ struct DetailsView: View {
                 }
             }
         }
-        .onAppear {
-            vm.onAppear()
-        }
-        .onDisappear {
-            vm.onDisappear()
-        }
+        .onAppear { vm.onAppear() }
+        .onDisappear { vm.onDisappear() }
     }
 }
 
