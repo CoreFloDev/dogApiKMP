@@ -8,7 +8,7 @@ struct ListView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                IfLet (vm.content) { content in
+                if let content = vm.content {
                     switch onEnum(of: content) {
                     case .loading:
                         ProgressView()

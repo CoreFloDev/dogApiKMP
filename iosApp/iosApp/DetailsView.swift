@@ -11,7 +11,7 @@ struct DetailsView: View {
     
     var body: some View {
         VStack {
-            IfLet (vm.content) { content in
+            if let content = vm.content {
                 switch onEnum(of: content.uiState) {
                 case.loading:
                     ProgressView()
