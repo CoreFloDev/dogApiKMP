@@ -5,8 +5,8 @@ struct DetailsView: View {
     
     @ObservedObject private var vm : DetailsViewModel
     
-    init(id: String) {
-        self.vm = DetailsViewModel(imageId: id)
+    init(id: String, app: AppComponent) {
+        self.vm = DetailsViewModel(imageId: id, app: app)
     }
     
     var body: some View {
@@ -50,17 +50,15 @@ struct DetailsView: View {
 }
 
 #Preview {
-    DetailsView(id: "SkmRJl9VQ")
+    DetailsView(id: "SkmRJl9VQ", app: InjectAppComponent(nav: { IosNavigation() }))
 }
 
 class DetailsViewModel: ObservableObject {
-    private let imageId: String
+    private let screen: Screen<DetailsInput, DetailsOutput, DetailsNavigation, Action, Result>
 
-    init(imageId: String) {
-        self.imageId = imageId
+    init(imageId: String, app: AppComponent) {
+        self.screen = InjectDetailsComponent(appComponent: app, imageId: imageId).screen
     }
-    
-    private lazy var screen = InjectDetailsComponent(appComponent: IOSAppComponent.app, imageId: imageId).screen
 
     @Published var content: DetailsOutput? = nil
     
@@ -81,7 +79,7 @@ class DetailsViewModel: ObservableObject {
         }
         
         Task {
-            for await move in nav {
+            for await _ in nav {
                 // subscribed
             }
         }

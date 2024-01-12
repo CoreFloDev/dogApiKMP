@@ -21,8 +21,8 @@ class Screen<I : ScreenInput, O : ScreenOutput, N : ScreenNavigation, A : Domain
 ) {
 
     // TODO migrate to io dispatcher once common have it
-    private var viewScope: CoroutineScope = CoroutineScope(Dispatchers.Default)
-    private val scope: CoroutineScope = CoroutineScope(Dispatchers.Default)
+    private var viewScope: CoroutineScope = CoroutineScope(Dispatchers.Unconfined)
+    private val scope: CoroutineScope = CoroutineScope(Dispatchers.Unconfined)
 
     private val input: Channel<I> = Channel()
 
@@ -37,7 +37,7 @@ class Screen<I : ScreenInput, O : ScreenOutput, N : ScreenNavigation, A : Domain
     }
 
     fun attach(): Attach<I, O, N> {
-        viewScope = CoroutineScope(Dispatchers.Default)
+        viewScope = CoroutineScope(Dispatchers.Unconfined)
 
         val (out, nav) = output
 
