@@ -1,14 +1,13 @@
 import SwiftUI
 import Shared
 
+
 class IosNavigation: Navigation, ObservableObject {
     @Published var nav: [Details] = []
-
+    
     func startDetailsActivity(id: String) {
-        var copy = nav
-        copy.append(Details(id: id))
         DispatchQueue.main.async {
-            self.nav = copy
+            self.nav.append(Details(id: id))
         }
     }
 }
