@@ -20,7 +20,11 @@ abstract class DetailsModule(private val imageId: String) {
     @Provides
     @DetailsScope
     protected fun provideScreen(displayDogDetailsUseCase: DisplayDogDetailsUseCase): Screen<DetailsInput, DetailsOutput, DetailsNavigation, Action, Result> =
-        Screen(DetailsActionReducer()(), DetailsUseCaseAggregator(displayDogDetailsUseCase), DetailsUiReducer()() as (Flow<DomainResult.UiUpdate>) -> Flow<DetailsOutput>)
+        Screen(
+            DetailsActionReducer()(),
+            DetailsUseCaseAggregator(displayDogDetailsUseCase),
+            DetailsUiReducer()() as (Flow<DomainResult.UiUpdate>) -> Flow<DetailsOutput>
+        )
 
     @Provides
     @DetailsScope
