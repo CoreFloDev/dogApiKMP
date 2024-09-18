@@ -17,7 +17,7 @@ kotlin {
     ].forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "Shared"
-            isStatic = true
+            setStatic(true)
             export(project(":common"))
             export(project(":feature:details"))
             export(project(":feature:list"))
