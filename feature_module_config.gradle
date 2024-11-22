@@ -1,10 +1,10 @@
 apply plugin: 'com.android.dynamic-feature'
 apply plugin: 'kotlin-multiplatform'
 apply plugin: 'com.google.devtools.ksp'
-apply plugin: 'org.jetbrains.kotlin.plugin.compose'
 
 kotlin {
     androidTarget {
+        apply plugin: 'org.jetbrains.kotlin.plugin.compose'
         compilations.configureEach {
             kotlinOptions {
                 jvmTarget = "17"
